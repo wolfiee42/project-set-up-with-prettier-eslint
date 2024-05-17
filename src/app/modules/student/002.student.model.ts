@@ -32,6 +32,8 @@ const addressSchema = new Schema<Address>({
     country: { type: String, required: true },
 })
 
+
+// main schema of the folder
 const StudentSchema = new Schema<Student>({
     id: { type: Number },
     name: userNameSchema,

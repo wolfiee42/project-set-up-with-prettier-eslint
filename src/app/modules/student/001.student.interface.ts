@@ -1,3 +1,5 @@
+
+// Main interface of the file.
 export type Student = {
     id: number;
     name: UserName;
