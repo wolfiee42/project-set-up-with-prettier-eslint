@@ -1,5 +1,5 @@
 import { Schema, model, connect } from 'mongoose';
-import { Address, Guardian, Student, Student, Student, UserName } from './001.student.interface';
+import { Address, Guardian, Student, UserName } from './001.student.interface';
 
 
 const userNameSchema = new Schema<UserName>({
@@ -56,4 +56,4 @@ const StudentSchema = new Schema<Student>({
 
 
 // model
-const Student = model<Student>('Student', StudentSchema);
+export const StudentModel = model<Student>('Student', StudentSchema);
