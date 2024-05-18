@@ -9,4 +9,4 @@ const TeacherSchema = new Schema<Teacher>({
     contactNo: { type: Number, required: true },
 })
 
-const TeacherModel = model<Teacher>('Teachers', TeacherSchema);
+export const TeacherModel = model<Teacher>('Teachers', TeacherSchema);
