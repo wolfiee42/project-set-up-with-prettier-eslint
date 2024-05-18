@@ -35,22 +35,51 @@ const addressSchema = new Schema<Address>({
 
 // main schema of the folder
 const StudentSchema = new Schema<Student>({
-    id: { type: Number },
-    name: userNameSchema,
-    gender: ['Male', 'Female'], // this concept is called enum.
-    email: { type: String },
+    id: { type: Number, required: true, unique: true },
+    name: {
+        type: userNameSchema,
+        required: [true, 'are bhai bhai bhai! Name field kidar hein?'] //createing custom error message with mongoose.
+    },
+    gender: {
+        type: String,
+        enum: {
+            values: ['Male', 'Female'],
+            message: "The gender field can only be one of the following: 'Male', 'Female' "
+        },
+        required: true
+    }, // this concept is called enum.
+    email: { type: String, unique: true },
     contantNo: { type: Number, required: true },
     emergencyContactNo: { type: Number },
-    bloodGroup: [
-        "A", "B", "AB", "O", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"
-    ],
-    guardian: guardianSchema,
-    presentAddress: addressSchema,
-    permanentAddress: addressSchema,
+    bloodGroup: {
+        type: String,
+        enum: {
+            values: ["A", "B", "AB", "O", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+            message: '{VALUE} is not valid. ',
+        },
+    },
+    guardian: {
+        type: guardianSchema,
+        required: true
+    },
+    presentAddress: {
+        type: addressSchema,
+        required: true
+    },
+    permanentAddress: {
+        type: addressSchema,
+        required: true
+    },
     localGuardian: {
-        name: userNameSchema,
+        name: {
+            type: userNameSchema,
+            required: true
+        },
         occupation: { type: String, required: true },
-        presentAddress: addressSchema,
+        presentAddress: {
+            type: addressSchema,
+            required: true
+        },
         contantNo: { type: String, required: true }
     },
     isActive: { type: Boolean, required: true }
