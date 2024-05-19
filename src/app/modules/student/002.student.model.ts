@@ -1,6 +1,6 @@
 import { Schema, model, connect } from 'mongoose';
 import { Address, Guardian, Student, UserName } from './001.student.interface';
-
+import validator from 'validator';
 
 const userNameSchema = new Schema<UserName>({
     firstName: {
@@ -20,7 +20,14 @@ const userNameSchema = new Schema<UserName>({
         type: String
     },
     lastName: {
-        type: String, required: true
+        type: String,
+        required: true,
+        validate: {
+            validator: (value: string) => {
+                return validator.isAlpha(value);
+            },
+            message: '{VALUE} is not valid.'
+        }
     }
 })
 
@@ -58,7 +65,16 @@ const StudentSchema = new Schema<Student>({
         },
         required: true
     }, // this concept is called enum.
-    email: { type: String, unique: true },
+    email: {
+        type: String,
+        unique: true,
+        validate: {
+            validator: (value: string) => {
+                return validator.isEmail(value);
+            },
+            message: '{VALUE} is not valid Email Type.',
+        }
+    },
     contantNo: { type: Number, required: true },
     emergencyContactNo: { type: Number },
     bloodGroup: {
