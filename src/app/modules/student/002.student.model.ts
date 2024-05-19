@@ -1,8 +1,8 @@
-import { Schema, model, connect } from 'mongoose';
-import { Address, Guardian, Student, UserName } from './001.student.interface';
+import { Schema, model, connect, Model } from 'mongoose';
+import { TAddress, TGuardian, TStudent, StudentMethods, StudentModel, TUserName } from './001.student.interface';
 import validator from 'validator';
 
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
         required: [true, 'Firstname is required.'],
@@ -31,7 +31,7 @@ const userNameSchema = new Schema<UserName>({
     }
 })
 
-const guardianSchema = new Schema<Guardian>({
+const guardianSchema = new Schema<TGuardian>({
     fatherName: { type: String, required: true },
     fatherContactNo: { type: Number, required: true },
     fatherOccupation: { type: String, required: true },
@@ -40,7 +40,7 @@ const guardianSchema = new Schema<Guardian>({
     motherOccupation: { type: String, required: true },
 })
 
-const addressSchema = new Schema<Address>({
+const addressSchema = new Schema<TAddress>({
     house: { type: String, required: true },
     road: { type: String, required: true },
     village: { type: String, required: true },
@@ -51,7 +51,7 @@ const addressSchema = new Schema<Address>({
 
 
 // main schema of the folder
-const StudentSchema = new Schema<Student>({
+const StudentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
     id: { type: Number, required: true, unique: true },
     name: {
         type: userNameSchema,
@@ -112,5 +112,10 @@ const StudentSchema = new Schema<Student>({
 })
 
 
+StudentSchema.methods.isStudentExist = async function (id: number) {
+    const existUser = await Student.findOne({ id });
+    return existUser;
+}
+
 // model
-export const StudentModel = model<Student>('Student', StudentSchema);
+export const Student = model<TStudent, StudentModel>('Student', StudentSchema); 

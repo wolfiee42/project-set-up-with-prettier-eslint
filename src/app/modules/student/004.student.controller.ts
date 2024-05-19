@@ -3,6 +3,7 @@ import { studentServices } from "./005.student.service";
 // import studentValidationSchema from "./006.student.joi.validation";
 import z from 'zod';
 import { studentValidationSchema } from "./007.student.zod.validation";
+import { Student } from "./002.student.model";
 
 // create student
 const createStudent = async (req: Request, res: Response) => {
@@ -12,6 +13,7 @@ const createStudent = async (req: Request, res: Response) => {
 
         // using for zod
         const zodParsedData = studentValidationSchema.parse(studentData)
+        const result = await studentServices.createStudentToDB(zodParsedData);
 
 
         // using for joi
@@ -27,7 +29,7 @@ const createStudent = async (req: Request, res: Response) => {
         //     })
         // }
 
-        const result = await studentServices.createStudentToDB(zodParsedData);
+
 
         res.status(200).json({
             success: true,
@@ -35,10 +37,10 @@ const createStudent = async (req: Request, res: Response) => {
             data: result
         })
 
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({
             success: false,
-            message: 'Something Went Wrong!',
+            message: error.message || 'Something Went Wrong!',
             error: error
         })
     }
