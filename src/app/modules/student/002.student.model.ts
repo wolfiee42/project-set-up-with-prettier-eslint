@@ -4,7 +4,17 @@ import { Address, Guardian, Student, UserName } from './001.student.interface';
 
 const userNameSchema = new Schema<UserName>({
     firstName: {
-        type: String, required: true
+        type: String,
+        required: [true, 'Firstname is required.'],
+        maxlength: [20, 'Firstname can not have more than 20 characters.'],
+        trim: true,
+        validate: {
+            validator: function (str: string) {
+                const capitalizedStr = str.charAt(0).toUpperCase() + str.slice(1);
+                return capitalizedStr === str;
+            },
+            message: '{VALUE} is not in capitalized format.'
+        }
     },
     middlename: {
         type: String
