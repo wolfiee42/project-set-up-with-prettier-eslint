@@ -36,7 +36,14 @@ const createStudentToDB = async (studentInfo: TStudent) => {
 
 // get a single students information
 const getSingleStudentFromDB = async (email: string) => {
-    const result = await Student.findOne({ email: email })
+
+    // without aggregate
+    // const result = await Student.findOne({ email: email });
+
+    // with aggregate
+    const result = await Student.aggregate([
+        { $match: { email: email } }
+    ])
     return result;
 }
 
@@ -47,7 +54,7 @@ const deleteStudentFromDB = async (id: string) => {
 }
 
 
-// get all student information
+// get all student information 
 const getAllStudentsFromDB = async () => {
     const result = await Student.find();
     return result;

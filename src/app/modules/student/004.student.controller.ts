@@ -109,6 +109,8 @@ const getAllStudents = async (req: Request, res: Response) => {
     }
 }
 
+
+
 export const studentController = {
     createStudent,
     getAllStudents,

@@ -114,6 +114,16 @@ const StudentSchema = new Schema<TStudent, StudentModel>({
     },
     isActive: { type: Boolean, required: true },
     isDeleted: { type: Boolean, default: false },
+}, {
+    toJSON: {
+        virtuals: true
+    }
+})
+
+
+// virtual
+StudentSchema.virtual('fullname').get(function () {
+    return `${this.name.firstName} ${this.name.middlename} ${this.name.lastName}`;
 })
 
 
@@ -137,6 +147,14 @@ StudentSchema.post('save', function (document, next) {
 // query middleware
 StudentSchema.pre('find', function (next) {
     this.find({ isDeleted: { $ne: true } })
+    next();
+});
+
+
+StudentSchema.pre('aggregate', function (next) {
+    this.pipeline().unshift({
+        $match: { isDeleted: { $ne: true } }
+    })
     next();
 })
 
