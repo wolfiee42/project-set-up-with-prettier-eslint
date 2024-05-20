@@ -1,6 +1,8 @@
-import { Schema, model, connect, Model } from 'mongoose';
-import { TAddress, TGuardian, TStudent, StudentMethods, StudentModel, TUserName } from './001.student.interface';
+import { Schema, model } from 'mongoose';
+// import { TAddress, TGuardian, TStudent, StudentMethods, StudentModel, TUserName } from './001.student.interface';
+import { StudentModel, TAddress, TGuardian, TStudent, TUserName } from './001.student.interface';
 import validator from 'validator';
+
 
 const userNameSchema = new Schema<TUserName>({
     firstName: {
@@ -51,7 +53,7 @@ const addressSchema = new Schema<TAddress>({
 
 
 // main schema of the folder
-const StudentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
+const StudentSchema = new Schema<TStudent, StudentModel>({
     id: { type: Number, required: true, unique: true },
     name: {
         type: userNameSchema,
@@ -112,10 +114,19 @@ const StudentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
 })
 
 
-StudentSchema.methods.isStudentExist = async function (id: number) {
-    const existUser = await Student.findOne({ id });
-    return existUser;
+// custom instant method
+// StudentSchema.methods.isStudentExist = async function (id: number) {
+//     const existUser = await Student.findOne({ id });
+//     return existUser;
+// }
+
+// custom static  method
+
+StudentSchema.statics.isStudentExist = async function (id: number) {
+    const existingUser = await Student.findOne({ id });
+    return existingUser;
 }
+
 
 // model
 export const Student = model<TStudent, StudentModel>('Student', StudentSchema); 

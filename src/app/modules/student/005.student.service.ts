@@ -3,8 +3,15 @@ import { Student } from "./002.student.model";
 
 // create student
 const createStudentToDB = async (studentInfo: TStudent) => {
+
+    // custom static method
+    if (await Student.isStudentExist(studentInfo.id)) {
+        throw new Error('User already exist!')
+    }
+
+
     // built-in static methods
-    // const result = await Student.create(studentInfo);
+    const result = await Student.create(studentInfo);
 
 
     //  built-in instance methods
@@ -13,13 +20,16 @@ const createStudentToDB = async (studentInfo: TStudent) => {
     // const result = await student.save();
 
 
-    const student = new Student(studentInfo);
 
-    if (await student.isStudentExist(studentInfo.id)) {
-        throw new Error('User already exist!')
-    }
+    // custom instanse method
 
-    const result = await student.save();
+    // const student = new Student(studentInfo);
+
+    // if (await student.isStudentExist(studentInfo.id)) {
+    //     throw new Error('User already exist!')
+    // }
+
+    // const result = await student.save();
     return result;
 }
 

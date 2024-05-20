@@ -51,11 +51,21 @@ export type TLocalGuardian = {
 }
 
 
+
+
+// for creating instance
+
 // method
 
-export type StudentMethods = {
-    isStudentExist(id: number): Promise<TStudent | null>
-}
+// export type StudentMethods = {
+//     isStudentExist(id: number): Promise<TStudent | null>
+// }
 
 // model
-export type StudentModel = Model<TStudent, Record<string, never>, StudentMethods>;
+// export type StudentModel = Model<TStudent, Record<string, never>, StudentMethods>;
+
+
+// for creating static
+export interface StudentModel extends Model<TUserName> {
+    isStudentExist(id: number): Promise<TStudent | null>
+}
