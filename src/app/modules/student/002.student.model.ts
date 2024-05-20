@@ -2,7 +2,8 @@ import { Schema, model } from 'mongoose';
 // import { TAddress, TGuardian, TStudent, StudentMethods, StudentModel, TUserName } from './001.student.interface';
 import { StudentModel, TAddress, TGuardian, TStudent, TUserName } from './001.student.interface';
 import validator from 'validator';
-
+import bcrypt from 'bcrypt';
+import configaration from '../../../configaration';
 
 const userNameSchema = new Schema<TUserName>({
     firstName: {
@@ -55,6 +56,7 @@ const addressSchema = new Schema<TAddress>({
 // main schema of the folder
 const StudentSchema = new Schema<TStudent, StudentModel>({
     id: { type: Number, required: true, unique: true },
+    password: { type: String, required: true, max: [20, 'bhai, kindly 20 character er beshi password diyen na.'] },
     name: {
         type: userNameSchema,
         required: [true, 'are bhai bhai bhai! Name field kidar hein?'] //createing custom error message with mongoose.
@@ -112,6 +114,23 @@ const StudentSchema = new Schema<TStudent, StudentModel>({
     },
     isActive: { type: Boolean, required: true }
 })
+
+
+// Pre save middleware or hook //will work on create() or save()
+StudentSchema.pre('save', async function (next) {
+    const user = this;
+    user.password = await bcrypt.hash(user.password,
+        Number(configaration.bcrypt_salt_round));
+
+    next();
+})
+
+
+// Post save middleware or hook
+StudentSchema.post('save', function () {
+    console.log(this, 'Post hook : we saved our data.');
+})
+
 
 
 // custom instant method

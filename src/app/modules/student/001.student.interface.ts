@@ -3,6 +3,7 @@ import { Model } from "mongoose";
 // Main interface of the file.
 export type TStudent = {
     id: number;
+    password: string,
     name: TUserName;
     gender: 'Male' | 'Female';
     email?: string;
