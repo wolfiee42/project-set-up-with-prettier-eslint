@@ -112,7 +112,8 @@ const StudentSchema = new Schema<TStudent, StudentModel>({
         },
         contantNo: { type: String, required: true }
     },
-    isActive: { type: Boolean, required: true }
+    isActive: { type: Boolean, required: true },
+    isDeleted: { type: Boolean, default: false },
 })
 
 
@@ -127,8 +128,16 @@ StudentSchema.pre('save', async function (next) {
 
 
 // Post save middleware or hook
-StudentSchema.post('save', function () {
-    console.log(this, 'Post hook : we saved our data.');
+StudentSchema.post('save', function (document, next) {
+    document.password = '',
+        next();
+})
+
+
+// query middleware
+StudentSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } })
+    next();
 })
 
 

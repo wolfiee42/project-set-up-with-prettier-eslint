@@ -40,6 +40,12 @@ const getSingleStudentFromDB = async (email: string) => {
     return result;
 }
 
+// get a single students information
+const deleteStudentFromDB = async (id: string) => {
+    const result = await Student.updateOne({ id }, { isDeleted: true })
+    return result;
+}
+
 
 // get all student information
 const getAllStudentsFromDB = async () => {
@@ -52,5 +58,6 @@ const getAllStudentsFromDB = async () => {
 export const studentServices = {
     createStudentToDB,
     getAllStudentsFromDB,
-    getSingleStudentFromDB
+    getSingleStudentFromDB,
+    deleteStudentFromDB
 }

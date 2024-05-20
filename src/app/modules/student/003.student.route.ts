@@ -10,6 +10,8 @@ router.post('/create-student', studentController.createStudent)
 // getting a single students data 
 router.get('/:email', studentController.getSingleStudent)
 
+// delete a single students data 
+router.delete('/:id', studentController.deleteSingleStudent)
 
 // getting all students data alLtogether
 router.get('/', studentController.getAllStudents)

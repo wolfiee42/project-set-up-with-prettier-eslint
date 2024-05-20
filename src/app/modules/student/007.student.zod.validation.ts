@@ -45,4 +45,5 @@ export const studentValidationSchema = z.object({
     permanentAddress: addressValidationSchema,
     localGuardian: localGuardianValidationSchema,
     isActive: z.boolean(),
+    isDeleted: z.boolean().optional(),
 });

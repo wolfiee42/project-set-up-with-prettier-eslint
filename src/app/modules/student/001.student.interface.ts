@@ -15,6 +15,7 @@ export type TStudent = {
     permanentAddress: TAddress;
     localGuardian: TLocalGuardian;
     isActive: boolean;
+    isDeleted?: boolean;
 }
 
 
